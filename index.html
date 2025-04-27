@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>滑动控制视频播放</title>
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        background-color: #000;
+        height: 300vh; /* 页面变得很长，能滑动 */
+        overflow-x: hidden;
+    }
+    video {
+        width: 100vw;
+        height: auto;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+    }
+</style>
+</head>
+<body>
+
+<!-- http://m.0wd.cn/2IJ9Ut -->
+<video id="myVideo" src="your-video.mp4" muted playsinline preload="auto"></video>
+
+<script>
+const video = document.getElementById('myVideo');
+
+window.addEventListener('scroll', function() {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const maxScroll = document.body.scrollHeight - window.innerHeight;
+    const scrollFraction = scrollTop / maxScroll;
+    const videoDuration = video.duration;
+    if (videoDuration > 0) {
+        video.currentTime = scrollFraction * videoDuration;
+    }
+});
+</script>
+
+</body>
+</html>
