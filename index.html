@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>滑动控制视频播放</title>
+<title>滑动控制视频播放（丝滑版）</title>
 <style>
     body, html {
         margin: 0;
         padding: 0;
         background-color: #000;
-        height: 3000vh; /* 页面变得很长，能滑动 */
+        height: 3000vh; /* 页面非常长，滑动非常细腻 */
         overflow-x: hidden;
     }
     video {
@@ -25,21 +25,32 @@
 </head>
 <body>
 
-<!-- http://m.0wd.cn/2IJ9Ut -->
+<!-- 视频文件，链接指向你的 h5.mp4 -->
 <video id="myVideo" src="h5.mp4" muted playsinline preload="auto"></video>
 
 <script>
 const video = document.getElementById('myVideo');
+let targetTime = 0; // 目标播放时间
 
+// 监听滑动事件
 window.addEventListener('scroll', function() {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     const maxScroll = document.body.scrollHeight - window.innerHeight;
     const scrollFraction = scrollTop / maxScroll;
-    const videoDuration = video.duration;
-    if (videoDuration > 0) {
-        video.currentTime = scrollFraction * videoDuration;
-    }
+    targetTime = scrollFraction * video.duration;
 });
+
+// 缓动播放更新
+function smoothUpdate() {
+    if (video.duration > 0) {
+        // 每一帧慢慢靠近目标时间
+        video.currentTime += (targetTime - video.currentTime) * 0.05;
+    }
+    requestAnimationFrame(smoothUpdate);
+}
+
+// 启动平滑播放
+smoothUpdate();
 </script>
 
 </body>
