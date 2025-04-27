@@ -9,7 +9,7 @@
         margin: 0;
         padding: 0;
         background-color: #000;
-        height: 3000vh; /* 页面非常长，滑动非常细腻 */
+        height: 3000vh; /* 超长页面，滑动超细腻 */
         overflow-x: hidden;
     }
     video {
@@ -25,14 +25,14 @@
 </head>
 <body>
 
-<!-- 视频文件，链接指向你的 h5.mp4 -->
+<!-- 这里是你的视频文件，记得名字是h5.mp4 -->
 <video id="myVideo" src="h5.mp4" muted playsinline preload="auto"></video>
 
 <script>
 const video = document.getElementById('myVideo');
-let targetTime = 0; // 目标播放时间
+let targetTime = 0; // 想到达的目标时间
 
-// 监听滑动事件
+// 监听滑动，设置目标播放时间
 window.addEventListener('scroll', function() {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     const maxScroll = document.body.scrollHeight - window.innerHeight;
@@ -40,16 +40,15 @@ window.addEventListener('scroll', function() {
     targetTime = scrollFraction * video.duration;
 });
 
-// 缓动播放更新
+// 平滑推进 currentTime
 function smoothUpdate() {
     if (video.duration > 0) {
-        // 每一帧慢慢靠近目标时间
-        video.currentTime += (targetTime - video.currentTime) * 0.05;
+        video.currentTime += (targetTime - video.currentTime) * 0.05; 
     }
     requestAnimationFrame(smoothUpdate);
 }
 
-// 启动平滑播放
+// 开始缓动播放
 smoothUpdate();
 </script>
 
